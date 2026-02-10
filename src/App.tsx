@@ -1,34 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useOptimistic, useState, useTransition } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [three, setThree] = useState<any[]>(Array.from({length: 100000}, () => Math.round(Math.random() * 100)))
+  const [value, setValue] = useState('');
+  const [isPending, startTrasition] = useTransition();
+  const [breeds, setBreeds] = useState<any>([]);
+
+  const [optimisticBreeds, setOptimisticBreeds] = useOptimistic(breeds)
+
+  const fetchBreeds = async () => {
+    const response_1 = await fetch('https://dogapi.dog/api/v2/breeds').then((response: any) => response.json())
+    setBreeds(response_1.data)
+  }
+
+  const startThreeBuild = () => {
+    startTrasition(() => {
+      setThree((current) => current.sort())
+    })
+  }
+
+  const handleChange = (event: any) => {
+    setValue(event.target.value);
+
+    startTrasition(() => {
+      setThree(Array.from({length: 10000}, () => Math.round(Math.random() * 100)));
+    })
+  }
+
+  const handleFetchBreeds = () => {
+    setOptimisticBreeds([{type: 't-1'}, {type: 't-2'}])
+    fetchBreeds()
+  }
 
   return (
-    <>
+    <main>
+      <h1>React v19</h1>
+
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h2>useTransition</h2>
+        <input type="text" onChange={handleChange} value={value}/>
+        <button onClick={startThreeBuild}>{isPending ? 'Pending...' : 'Sort me'}</button>
+        <div className='list transition'>
+          {three.map((el) => (
+            <p>{el}</p>
+          ))}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+
+      <div>
+        <h2>useOptimistic</h2>
+        <input type="text" onChange={handleChange} value={value}/>
+        <button onClick={handleFetchBreeds}>{isPending ? 'Pending...' : 'Fetch breeds'}</button>
+
+        <div className='list transition'>
+          {optimisticBreeds.map((breed: any) => (
+            <p>{breed.type}</p>
+          ))}
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </main>
   )
 }
 
