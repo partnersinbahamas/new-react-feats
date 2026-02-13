@@ -1,32 +1,38 @@
 import { useOptimistic, useState, useTransition } from "react";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { mockServerSuccess, mockServerError } from "./utils";
 
 const Optimistic = () => {
-  const [breeds, setBreeds] = useState<any>([]);
-  const [optimisticBreeds, setOptimisticBreeds] = useOptimistic(breeds);
-  const [isPending, startTrasition] = useTransition();
+    const [isPending, startTransition] = useTransition();
+    const [like, setLike] = useState(false);
+    const [optimisticLike, setOptimisticList] = useOptimistic(like, (draft, value: boolean) => value);
+    
 
-  const fetchBreeds = async () => {
-    const response_1 = await fetch('https://dogapi.dog/api/v2/breeds').then((response: any) => response.json())
-    setBreeds(response_1.data)
-  }
-
-  const handleFetchBreeds = () => {
-    startTrasition(() => {
-        setOptimisticBreeds([{type: 't-1'}, {type: 't-2'}])
-        fetchBreeds()
-    });
-  }
+    const handleLike = async () => {
+        startTransition(async () => {
+            try {
+                setOptimisticList(true);
+                // const respose = await mockServerError();
+                const respose = await mockServerSuccess(true);
+                setLike(respose.data)
+            } catch(error) {
+                console.error('Error', error)
+            }
+        });
+    };
 
     return (
         <div>
         <h2>useOptimistic</h2>
-        <button onClick={handleFetchBreeds}>{isPending ? 'Pending...' : 'Fetch breeds'}</button>
-
-        <div className='list transition'>
-          {optimisticBreeds.map((breed: any) => (
-            <p>{breed.type}</p>
-          ))}
-        </div>
+        
+        <button type="submit" onClick={handleLike}>
+          {optimisticLike ? (
+            <FavoriteIcon />
+          ) : (
+            <FavoriteBorderIcon />
+          )}
+        </button>
       </div>
     )
 }
