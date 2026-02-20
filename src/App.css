@@ -14,3 +14,21 @@
   max-height: 400px;
   overflow: scroll;
 }
+
+.square {
+  position: absolute;
+  top: 10px;
+  width: 15px;
+  height: 15px;
+  animation: colorChange 1s infinite alternate;
+}
+
+@keyframes colorChange {
+  0% {
+    background-color: red;
+  }
+  
+  100% {
+    background-color: blue;
+  }
+}
