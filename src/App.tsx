@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import UseSuspense from './UseSuspense';
 import { mockServerError, mockServerSuccess } from './utils';
 import { ErrorBoundary } from 'react-error-boundary';
+import Deffered from './Deffered';
 
 function App() {
   const helloWorldPromise = mockServerSuccess('hello world');
@@ -23,6 +24,8 @@ function App() {
           <UseSuspense promise={helloWorldPromise} />
         </Suspense>
       </ErrorBoundary>
+      <Deffered />
+
     </main>
   )
 }
