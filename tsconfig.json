@@ -1,7 +1,8 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "allowJs": true,       // разрешает импортировать JS/JSX
+    "checkJs": false,      // необязательно, проверять JS не нужно
+    "jsx": "react-jsx",    // для React 17+ / TS 4.1+
+  },
+  "include": ["src"]
 }
