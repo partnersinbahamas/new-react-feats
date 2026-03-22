@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "allowJs": true,       // разрешает импортировать JS/JSX
-    "checkJs": false,      // необязательно, проверять JS не нужно
-    "jsx": "react-jsx",    // для React 17+ / TS 4.1+
+    "allowJs": true, 
+    "checkJs": false,      
+    "jsx": "react-jsx",    
   },
   "include": ["src"]
 }

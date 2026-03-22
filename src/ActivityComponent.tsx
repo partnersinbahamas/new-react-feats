@@ -2,7 +2,8 @@ import { useState, Activity } from "react";
 import Active from "./Active";
 
 const ActivityComponent = () => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  
   return (
     <div>
         <h1>Activity</h1>
